@@ -1,0 +1,48 @@
+#ifndef __MPEG_ISOBASE_DATA_ENTRY_URN_BOX__
+#define __MPEG_ISOBASE_DATA_ENTRY_URN_BOX__
+
+#include <mpeg-isobase/box/full.h>
+#include <mpeg-isobase/parser.h>
+#include <mpeg-isobase/composer.h>
+
+
+namespace mpeg {
+namespace isobase {
+
+
+struct DataEntryUrnBox: FullBox {
+
+    static constexpr Type container_type = 'dref';
+    static constexpr Type box_type = 'urn ';
+    static constexpr const char *box_name = "DataEntryUrnBox";
+
+    static constexpr Flags SameFileFlag = 0x000001;
+
+    String name, location;
+
+    DataEntryUrnBox(Composer &composer,
+            const std::string &name = std::string(), const std::string &location = std::string(),
+            Version version = 0, Flags flags = 0, bool largesize = false): FullBox(composer, box_type, version, flags, largesize) {
+
+        if (flags & SameFileFlag) {
+            assert(name.empty() && location.empty());
+        } else {
+            composer.get(this->name, name, this->location, location);
+        }
+    }
+
+    DataEntryUrnBox(Parser &parser): FullBox(parser) {
+        //if (!(flags & SameFileFlag)) {    // TODO: make it properly work
+            parser.get(*this, name, location);
+        //}
+    }
+
+    virtual void output_fields(bitstream::output::meta::field::Stream &stream) const;
+
+};
+
+
+}} // namespace mpeg::isobase
+
+#endif // __MPEG_ISOBASE_DATA_ENTRY_URN_BOX__
+

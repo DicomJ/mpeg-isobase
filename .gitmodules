@@ -1,0 +1,4 @@
+[submodule "bitstream"]
+	path = extern/bitstream
+	url = git@github.com:DicomJ/bitstream.git
+	branch = master

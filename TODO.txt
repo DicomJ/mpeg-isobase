@@ -1,0 +1,5 @@
+Items to be done:
+- make a check of max_depth for nexted boxes
+- ability to override box class within box map
+- ability to clone box map
+- handle text and sbtl handler_type\s
